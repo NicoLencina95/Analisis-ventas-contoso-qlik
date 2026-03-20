@@ -1,4 +1,4 @@
-# Analisis-ventas-contoso-qlik
+# Analisis ventas contoso (Qlik)
 Optimización y Análisis de Datos para Contoso: De la Extracción a la Toma de Decisiones 
 1. Resumen del Proyecto
 
@@ -20,7 +20,9 @@ El desarrollo comenzó con la ingesta y depuración para asegurar la calidad de 
 
 Fase 2: Modelado de Datos 
 
-(Arriba/Izquierda: Estado Inicial | Abajo/Derecha: Estado Optimizado)
+![Comparativa del Modelo de Datos](images/modelo.png)
+
+(Izquierda: Estado Inicial | Derecha: Estado Optimizado)
 
 Se realizó una reestructuración completa de la arquitectura:
 
@@ -50,15 +52,21 @@ Para la interfaz de usuario, se construyó una experiencia dinámica enfocada en
     condicionales y títulos dinámicos basados en el contexto de los datos filtrados , además de jerarquías para un 
     drill-down intuitivo.
 
-4. Dashboards y Visualizaciones 
+4. Dashboards y Visualizaciones
+   
+![Dashboard Principal](images/dash_principal.png)
 
 El tablero principal cuenta con filtros por cliente y periodos , KPIs de margen comparativos y ventas totales , junto con gráficos temporales YTD y MAT. Integra gráficos combinados y de dona para analizar cantidades y márgenes por jerarquía de productos.
 
+![Dashboard de Productos](images/dash_productos.png)
+
 La vista de productos detalla los artículos más vendidos mediante gráficos de barras y cruza el margen neto vs. monto de ventas en un gráfico de dispersión ponderado por cantidades.
+
+![Dashboard de Clientes](images/dash_clientes.png)
 
 La vista de clientes incorpora un gráfico de bloques basado en ventas , segmentación RFM por estadío del cliente y distribución geográfica interactiva.
 
-5. Insights y Conclusiones del Negocio 
+6. Insights y Conclusiones del Negocio 
 
 El análisis del modelo consolidado permitió identificar los siguientes hallazgos clave:
 
