@@ -1,0 +1,50 @@
+//-------------------------------------------------------
+
+SET vS.TableName = Presupuesto;
+SET vS.QVDFileName = L2_Fact_Presupuesto;
+Set vS.PathFile = $(vQVDTraVtas);
+
+//-------------------------------------------------------
+Tbl_Tmp1:
+CrossTable (DateKey,Presupuesto,3)
+	LOAD
+    	*
+     FROM [$(vQVDExtVtas)/L1_EXCEL_FACT_Presupuesto.qvd](qvd);
+     
+Tbl_tmp2:
+NoConcatenate
+	Load	
+    	NUM#(DateKey) AS DateKey,
+        ChannelKey,
+        StoreKey,
+        ProductKey,
+        Presupuesto as Presupuesto_EURO
+    RESIDENT Tbl_Tmp1
+    WHERE Presupuesto <>0;
+    DROP TABLE Tbl_Tmp1;
+LEFT JOIN (Tbl_tmp2)
+
+	Load
+    	Num(MonthStart(DateKey)) as DateKey,
+        AVG(AverageRate) 		 as AverageRate
+    FROM [$(vQVDExtVtas)/L1_MYSQL_FACT_Tasa_Cambio.qvd](qvd)
+    WHERE CurrencyKey = 1
+    GROUP BY
+    		Num(MonthStart(DateKey));
+            
+$(vS.TableName):
+NoConcatenate	
+	Load
+    	DateKey,
+        ChannelKey, 
+        StoreKey, 
+        ProductKey, 
+        AverageRate, 
+        Presupuesto_EURO,
+        Presupuesto_EURO * AverageRate As Presupuesto_USD
+        RESIDENT Tbl_tmp2;
+        DROP TABLE Tbl_tmp2;
+        
+ 
+Store $(vS.TableName) INTO [$(vS.PathFile)/$(vS.QVDFileName).qvd](qvd);
+DROP TABLE $(vS.TableName);

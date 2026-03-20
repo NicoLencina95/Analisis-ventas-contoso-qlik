@@ -1,0 +1,56 @@
+ //-------------------------------------------------------
+
+SET vS.TableName = Fact_Table_Consolidada;
+SET vS.QVDFileName = L4_Fact_Tabla_Consolidada;
+Set vS.PathFile = $(vQVDTraVtas);
+
+//-------------------------------------------------------
+  $(vS.TableName):
+   LOAD
+        Flg_Tipo_Transaccion,
+        DateKey,
+        StoreKey,
+        ProductKey,
+        PromotionKey,
+        CurrencyKey,
+        CustomerKey,
+        ChannelKey,
+        SalesQuantity,
+        ReturnQuantity,
+        DiscountQuantity,
+        UnitCost_EUR,
+        UnitPrice_EUR,
+        SalesAmount_EUR,
+        ReturnAmount_EUR,
+        DiscountAmount_EUR,
+        TotalCost_EUR,
+        MargenBruto_EUR,
+        MargenNeto_EUR,
+        AverageRate,
+        UnitCost_USD,
+        UnitPrice_USD,
+        SalesAmount_USD,
+        ReturnAmount_USD,
+        DiscountAmount_USD,
+        TotalCost_USD,
+        MargenBruto_USD,
+        MargenNeto_USD
+    FROM [$(vQVDTraVtas)/L3_Fact_Ventas_Consolidada.qvd](qvd);
+Concatenate     
+    
+    LOAD
+    	'Presupuesto'  AS Flg_Tipo_Transaccion,
+        DateKey,
+        ChannelKey,
+        StoreKey,
+        ProductKey,
+        AverageRate,
+        Presupuesto_EURO,
+        Presupuesto_USD
+    FROM [$(vQVDTraVtas)/L2_Fact_Presupuesto.qvd](qvd);
+
+
+
+  
+   Store $(vS.TableName) INTO [$(vS.PathFile)/$(vS.QVDFileName).qvd](qvd);
+DROP TABLE $(vS.TableName);

@@ -1,0 +1,59 @@
+//-------------------------------------------------------
+
+SET vS.TableName = Ventas_Online;
+SET vS.QVDFileName = L2_Fact_Ventas_Online;
+Set vS.PathFile = $(vQVDTraVtas);
+
+//-------------------------------------------------------
+ $(vS.TableName): 
+  	  Load
+      	*,
+       MargenBruto-DiscountAmount as MargenNeto ;
+      
+      Load
+      	*,
+       SalesAmount-TotalCost-ReturnAmount as MargenBruto;
+      
+      LOAD
+      //Dimensiones*************************
+      
+      num(MonthStart(DateKey)) as DateKey,
+      StoreKey,
+      ProductKey,
+      PromotionKey,
+      CurrencyKey,
+      CustomerKey,
+      UnitCost as UnitCost_Ventas_Online,
+      UnitPrice as UnitPrice_Ventas_Online,
+      
+      //Metricas*********************
+      
+      sum (SalesQuantity) 	 as SalesQuantity ,
+      sum (SalesAmount)   	 as SalesAmount,
+      sum (ReturnQuantity)   as ReturnQuantity,
+      sum (ReturnAmount)     as ReturnAmount,
+      sum (DiscountQuantity) as DiscountQuantity,
+      sum (DiscountAmount)   as DiscountAmount,
+      sum (TotalCost)        as TotalCost
+      
+      //Otros ********************
+      
+//     OnlineSalesKey,
+//     SalesOrderLineNumber,
+//     SalesOrderNumber
+  FROM [$(vQVDExtVtas)/L1_MYSQL_FACT_Ventas_Online.qvd](qvd)
+  
+  Group By
+  num(MonthStart(DateKey)),
+      StoreKey,
+      ProductKey,
+      PromotionKey,
+      CurrencyKey,
+      CustomerKey,
+      UnitCost,
+      UnitPrice;
+      
+
+  
+  Store $(vS.TableName) INTO [$(vS.PathFile)/$(vS.QVDFileName).qvd](qvd);
+DROP TABLE $(vS.TableName);

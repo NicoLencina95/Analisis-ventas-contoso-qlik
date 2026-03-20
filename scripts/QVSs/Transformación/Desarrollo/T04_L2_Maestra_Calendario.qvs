@@ -1,0 +1,36 @@
+//-------------------------------------------------------
+
+SET vS.TableName = Maestra_Calendario;
+SET vS.QVDFileName = L2_Maestra_Calendario;
+Set vS.PathFile = $(vQVDTraVtas);
+
+//-------------------------------------------------------
+LET vFechaIni = num(makedate(2015,1,1));
+LET vFechaFin = num(makedate(2050,12,31));
+
+
+$(vS.TableName):
+
+		Load
+            *,
+            num(Mes)   as Mes_Num,
+            num(Periodo) as Periodo_Num;
+        
+        Load	
+            DateKey,
+            date(DateKey, 'DD/MM/YYYY') as Fecha,
+            year(DateKey) 				as Anio,
+            month(DateKey)  			as Mes,
+            date (MonthStart(DateKey), 'YYYYMM') as Periodo
+            ;
+        
+        Load
+        
+            $(vFechaIni) + recno ()-1  as DateKey
+            Autogenerate $(vFechaFin) - $(vFechaIni);
+            
+            
+ 
+  
+   Store $(vS.TableName) INTO [$(vS.PathFile)/$(vS.QVDFileName).qvd](qvd);
+DROP TABLE $(vS.TableName);
