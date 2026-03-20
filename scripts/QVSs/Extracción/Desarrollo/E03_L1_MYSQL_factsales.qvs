@@ -1,0 +1,37 @@
+/*Transaccional Ventas en Tienda
+Autor: Nicolás
+Fecha: 29-01-26
+*/
+//-------------------------------------------------------
+
+SET vS.TableName = factsales;
+SET vS.QVDFileName = L1_MYSQL_FACT_Ventas_Tienda;
+Set vS.PathFile = $(vQVDExtVtas);
+
+//-------------------------------------------------------
+$(vS.TableName):
+    LOAD 
+    	SalesKey, 
+        DateKey, 
+        channelKey, 
+        StoreKey, 
+        ProductKey, 
+        PromotionKey, 
+        CurrencyKey, 
+        UnitCost, 
+        UnitPrice, 
+        SalesQuantity, 
+        ReturnQuantity, 
+        ReturnAmount, 
+        DiscountQuantity, 
+        DiscountAmount, 
+        TotalCost, 
+        SalesAmount;
+
+    SELECT 
+        *
+    FROM spanish.factsales;
+
+
+Store $(vS.TableName) INTO [$(vS.PathFile)/$(vS.QVDFileName).qvd](qvd);
+DROP TABLE $(vS.TableName);

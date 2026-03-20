@@ -1,0 +1,51 @@
+/*Tabla Clientes
+Autor: Nicolás
+Fecha: 29-01-26
+*/
+//-------------------------------------------------------
+
+SET vS.TableName = dimcustomer;
+SET vS.QVDFileName = L1_MYSQL_DIM_Clientes;
+Set vS.PathFile = $(vQVDExtVtas);
+
+//-------------------------------------------------------
+$(vS.TableName):
+    LOAD 
+    	CustomerKey, 
+        GeographyKey, 
+        CustomerLabel, 
+        Title, 
+        FirstName, 
+        MiddleName, 
+        LastName, 
+        NameStyle, 
+        BirthDate, 
+        MaritalStatus, 
+        Suffix, 
+        Gender, 
+        EmailAddress, 
+        YearlyIncome, 
+        TotalChildren, 
+        NumberChildrenAtHome, 
+        Education, 
+        Occupation, 
+        HouseOwnerFlag, 
+        NumberCarsOwned, 
+        AddressLine1, 
+        AddressLine2, 
+        Phone, 
+        DateFirstPurchase, 
+        CustomerType, 
+        CompanyName, 
+        ETLLoadID, 
+        LoadDate , 
+        UpdateDate;
+
+    SELECT 
+        *
+    FROM spanish.dimcustomer;
+    
+
+
+Store $(vS.TableName) INTO [$(vS.PathFile)/$(vS.QVDFileName).qvd](qvd);
+DROP TABLE $(vS.TableName);

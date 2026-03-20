@@ -1,0 +1,33 @@
+/*Tabla Geografía Clientes
+Autor: Nicolás
+Fecha: 29-01-26
+*/
+//-------------------------------------------------------
+
+SET vS.TableName = dimgeography;
+SET vS.QVDFileName = L1_MYSQL_DIM_Geografia;
+Set vS.PathFile = $(vQVDExtVtas);
+
+//-------------------------------------------------------
+$(vS.TableName):
+    LOAD 
+    	GeographyKey, 
+        GeographyTypeKey, 
+        GeographyType, 
+        ContinentName, 
+        CityName, 
+        StateProvinceName, 
+        RegionCountryName, 
+        Geometry, 
+        ETLLoadID, 
+        LoadDate, 
+        UpdateDate;
+
+    SELECT 
+    	*
+    FROM spanish.dimgeography;
+
+
+
+Store $(vS.TableName) INTO [$(vS.PathFile)/$(vS.QVDFileName).qvd](qvd);
+DROP TABLE $(vS.TableName);

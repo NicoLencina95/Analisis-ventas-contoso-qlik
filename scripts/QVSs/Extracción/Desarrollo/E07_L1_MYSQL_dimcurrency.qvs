@@ -1,0 +1,28 @@
+/*Tabla Tipos de moneda
+Autor: Nicolás
+Fecha: 29-01-26
+*/
+//-------------------------------------------------------
+
+SET vS.TableName = dimcurrency;
+SET vS.QVDFileName = L1_MYSQL_DIM_Tipo_Cambio;
+Set vS.PathFile = $(vQVDExtVtas);
+
+//-------------------------------------------------------
+ $(vS.TableName):
+    LOAD
+    	CurrencyKey, 
+        CurrencyLabel, 
+        CurrencyName, 
+        CurrencyDescription, 
+        ETLLoadID, 
+        LoadDate, 
+        UpdateDate;
+
+    SELECT 
+        *
+    FROM spanish.dimcurrency;
+
+
+Store $(vS.TableName) INTO [$(vS.PathFile)/$(vS.QVDFileName).qvd](qvd);
+DROP TABLE $(vS.TableName);

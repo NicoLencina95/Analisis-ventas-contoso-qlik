@@ -1,0 +1,27 @@
+/*
+Tabla Canales de Ventas
+Autor: Nicolás
+Fecha: 29-01-26
+*/
+//-------------------------------------------------------
+
+SET vS.TableName = dimchannel;
+SET vS.QVDFileName = L1_MYSQL_DIM_Canales;
+Set vS.PathFile = $(vQVDExtVtas);
+
+//-------------------------------------------------------
+$(vS.TableName):
+    LOAD 
+        ChannelKey, 
+        ChannelLabel, 
+        ChannelName, 
+        ChannelDescription, 
+        ETLLoadID, 
+        LoadDate, 
+        UpdateDate;
+    SELECT 
+        *
+    FROM spanish.dimchannel;
+
+Store $(vS.TableName) INTO [$(vS.PathFile)/$(vS.QVDFileName).qvd](qvd);
+DROP TABLE $(vS.TableName);

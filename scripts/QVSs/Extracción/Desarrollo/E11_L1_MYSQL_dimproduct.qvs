@@ -1,0 +1,52 @@
+/*Tabla Productos
+Autor: Nicolás
+Fecha: 29-01-26
+*/
+//-------------------------------------------------------
+
+SET vS.TableName = Dim_Productos;
+SET vS.QVDFileName = L1_MYSQL_DIM_Productos;
+Set vS.PathFile = $(vQVDExtVtas);
+
+//-------------------------------------------------------
+$(vS.TableName):
+    LOAD ProductKey, 
+        ProductLabel, 
+        ProductName, 
+        ProductDescription, 
+        ProductSubcategoryKey, 
+        Manufacturer, 
+        BrandName, 
+        ClassID, 
+        ClassName, 
+        StyleID, 
+        StyleName, 
+        ColorID, 
+        ColorName, 
+        Size, 
+        SizeRange, 
+        SizeUnitMeasureID, 
+        Weight, 
+        WeightUnitMeasureID, 
+        UnitOfMeasureID, 
+        UnitOfMeasureName, 
+        StockTypeID, 
+        StockTypeName, 
+        UnitCost, 
+        UnitPrice, 
+        AvailableForSaleDate, 
+        StopSaleDate, 
+        Status, 
+        ImageURL, 
+        ProductURL, 
+        ETLLoadID, 
+        LoadDate, 
+        UpdateDate;
+
+    SELECT 
+    	*
+    FROM spanish.dimproduct;
+
+
+Store $(vS.TableName) INTO [$(vS.PathFile)/$(vS.QVDFileName).qvd](qvd);
+DROP TABLE $(vS.TableName);

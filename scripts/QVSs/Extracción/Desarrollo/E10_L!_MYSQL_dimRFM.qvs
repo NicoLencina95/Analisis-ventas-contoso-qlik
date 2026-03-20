@@ -1,0 +1,37 @@
+/*Tabla RFM
+Autor: Nicolás
+Fecha: 29-01-26
+*/
+//-------------------------------------------------------
+
+SET vS.TableName = RFM;
+SET vS.QVDFileName = L1_MYSQL_DIM_RFM;
+Set vS.PathFile = $(vQVDExtVtas);
+
+//-------------------------------------------------------
+$(vS.TableName):
+    LOAD 
+    	CustomerKey, 
+        Transac, 
+        FirstPurchasedate, 
+        LastPurchasedate, 
+        TotalRevenue, 
+        TileNumR, 
+        TileNumF, 
+        TileNumM, 
+        R_FLAG, 
+        F_FLAG, 
+        M_FLAG, 
+        RFM_Score, 
+        TAG, 
+        ACTIVITY, 
+        ACTIONABLE_TIP;
+
+    SELECT 
+        *
+    FROM spanish.RFM;
+
+
+
+Store $(vS.TableName) INTO [$(vS.PathFile)/$(vS.QVDFileName).qvd](qvd);
+DROP TABLE $(vS.TableName);

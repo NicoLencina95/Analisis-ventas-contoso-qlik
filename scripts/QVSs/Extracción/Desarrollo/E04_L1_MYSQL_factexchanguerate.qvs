@@ -1,0 +1,27 @@
+/*Transaccional Tipos de Cambio
+Autor: Nicolás
+Fecha: 29-01-26
+*/
+//-------------------------------------------------------
+
+SET vS.TableName = factexchangerate;
+SET vS.QVDFileName = L1_MYSQL_FACT_Tasa_Cambio;
+Set vS.PathFile = $(vQVDExtVtas);
+
+//-------------------------------------------------------
+$(vS.TableName):
+    LOAD 
+    	ExchangeRateKey, 
+        CurrencyKey, 
+        DateKey, 
+        AverageRate, 
+        EndOfDayRate;
+
+    SELECT 
+        *
+    FROM spanish.factexchangerate;
+
+
+
+Store $(vS.TableName) INTO [$(vS.PathFile)/$(vS.QVDFileName).qvd](qvd);
+DROP TABLE $(vS.TableName);
